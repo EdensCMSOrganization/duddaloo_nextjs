@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+
 import { LuFacebook, LuInstagram } from "react-icons/lu";
 
 const Footer = () => {
@@ -14,8 +15,8 @@ const Footer = () => {
           <Image
             src="/logoduddaloo.svg"
             alt="affars logo"
-            width={80}
-            height={80}
+            width={120}
+            height={120}
             priority
           />
 

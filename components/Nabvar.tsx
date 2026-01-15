@@ -39,15 +39,15 @@ export default function Navbar() {
             <Image
               src="/logoduddaloo.svg"
               alt="affars logo"
-              width={80}
-              height={80}
+              width={120}
+              height={120}
               priority
             />
           </Link>
 
           <div className="flex gap-4">
             <Link href="/">Home</Link>
-            <Link href="/shop">Shop</Link>
+            <Link href="/products">Shop</Link>
             <Link href="/about">About</Link>
             <Link href="/contact">Contact</Link>
           </div>

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 
 const registerSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(6),
 });
 
@@ -53,7 +53,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto p-8">
+    <div className="min-h-screen max-w-md mx-auto p-8">
       <h1 className="text-2xl font-bold mb-4">Create Admin Account</h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit}>

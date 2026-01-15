@@ -34,7 +34,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-8">
+    <div className="h-screen max-w-md mx-auto p-8">
       <h1 className="text-2xl font-bold mb-4">Sign In</h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit}>

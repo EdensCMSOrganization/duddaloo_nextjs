@@ -34,7 +34,7 @@ export default function Navbar() {
       <Link href="/" className="text-xl font-bold">
          <Image
           src="/logo.svg" 
-          alt="Logo de la tienda"
+          alt="Logo cms"
           width={80} 
           height={80} // Alto en píxeles
           priority // Si es el logo principal, carga prioritariamente

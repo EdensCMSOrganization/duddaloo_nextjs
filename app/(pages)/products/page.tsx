@@ -9,7 +9,7 @@ const ShopPage = async () => {
   return (
     <>
      <Navbar />
-     <div className="max-w-6xl mx-auto p-4">
+     <div className="h-screen max-w-6xl mx-auto p-4">
         <h1 className="text-2xl font-bold my-6">Products</h1>
         {products.length === 0 ? (
           <p>No products available.</p>
