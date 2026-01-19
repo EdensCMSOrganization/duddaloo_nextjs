@@ -48,7 +48,7 @@ function SubmitButton() {
   );
 }
 
-export default function AdminProductForm() {
+export default function CreateProductForm() { // Renamed from AdminProductForm
   const [state, formAction] = useActionState(createProduct, {
     success: false,
     error: null,
@@ -263,6 +263,20 @@ export default function AdminProductForm() {
               step="0.01"
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
               placeholder="0.00"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-gray-700">
+              Stock Quantity
+            </label>
+            <input
+              type="number"
+              name="stock"
+              required
+              min="0"
+              step="1"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+              placeholder="0"
             />
           </div>
         </div>

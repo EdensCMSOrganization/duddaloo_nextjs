@@ -10,6 +10,7 @@ export interface IProduct {
   stripeId: string;
   images: string[]; // ahora es un array
   inStock: boolean;
+  stock: number; // Nuevo campo para la cantidad de stock
   createdAt?: Date;
 }
 
@@ -19,7 +20,8 @@ const productSchema = new Schema<IProduct>({
   price: { type: Number, required: true },
   stripeId: { type: String, required: true, unique: true },
   images: [{ type: String }], // array de URLs
-  inStock: { type: Boolean, default: true }
+  inStock: { type: Boolean, default: true },
+  stock: { type: Number, required: true, default: 0 } // Nuevo campo para la cantidad de stock
 }, { timestamps: true });
 
 const Product = models.Product || model('Product', productSchema);

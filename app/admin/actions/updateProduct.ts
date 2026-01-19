@@ -13,8 +13,9 @@ interface UpdatePayload {
   name: string;
   description: string;
   price: number;
-  stripeId: string;
+  stripeId?: string; // stripeId might change if price changes, so it can be optional in payload
   inStock: boolean;
+  stock: number; // Add stock to UpdatePayload
   images?: string[]; // La propiedad imágenes es opcional aquí
 }
 
@@ -24,6 +25,7 @@ const productUpdateSchema = z.object({
   description: z.string().min(1),
   price: z.number().min(0),
   inStock: z.boolean(),
+  stock: z.number().int().min(0, "El stock debe ser un número entero no negativo"), // Add stock to schema
 });
 
 export async function updateProduct(prevState: unknown, formData: FormData) {
@@ -55,6 +57,7 @@ export async function updateProduct(prevState: unknown, formData: FormData) {
       description: (formData.get("description") as string)?.trim(),
       price: Number(formData.get("price")),
       inStock: formData.get("inStock") === "true",
+      stock: Number(formData.get("stock")), // Extract stock from formData
     });
 
     // 3. Crear el payload usando la interfaz definida arriba
@@ -62,6 +65,7 @@ export async function updateProduct(prevState: unknown, formData: FormData) {
     const { id: _, ...rest } = validated;
     const updatePayload: UpdatePayload = {
       ...rest,
+      inStock: validated.stock > 0 ? true : false, // Derive inStock from stock
     };
 
     // 4. Lógica de Stripe para actualizaciones

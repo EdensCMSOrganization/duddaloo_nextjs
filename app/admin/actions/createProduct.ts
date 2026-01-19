@@ -13,6 +13,8 @@ const productSchema = z.object({
   description: z.string().min(1, "La descripción es obligatoria"),
   price: z.number().min(0, "El precio debe ser mayor a 0"),
   images: z.array(z.string()).min(1, "Al menos una imagen es requerida"),
+  inStock: z.boolean(), // Keep inStock validation for now
+  stock: z.number().int().min(0, "El stock debe ser un número entero no negativo"),
 });
 
 export async function createProduct(_prevState: unknown, formData: FormData) {
@@ -50,6 +52,8 @@ export async function createProduct(_prevState: unknown, formData: FormData) {
       description: (formData.get("description") as string)?.trim(),
       price: Number(formData.get("price")),
       images: uploadedUrls,
+      inStock: formData.get("inStock") === "true", // Extract inStock
+      stock: Number(formData.get("stock")), // Extract stock
     });
 
     // 2. Creamos el producto y el precio en Stripe automáticamente
@@ -73,6 +77,7 @@ export async function createProduct(_prevState: unknown, formData: FormData) {
     await Product.create({
       ...validated,
       stripeId: stripePrice.id,
+      inStock: validated.stock > 0 ? true : false, // Re-evaluate inStock based on stock quantity
     });
 
     revalidatePath("/admin");
