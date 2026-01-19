@@ -2,11 +2,11 @@
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  // Al no poner apiVersion, TypeScript no dará error
-  // y se usará la versión nativa de la SDK instalada
+  // If apiVersion is not set, TypeScript won't throw an error
+  // and the native version of the installed SDK will be used
 });
 
-//O Actualizar a la versión que te pide el error
+// Or update to the version requested by the error
 // const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 //   apiVersion: '2025-12-15.clover' as any,
 // });

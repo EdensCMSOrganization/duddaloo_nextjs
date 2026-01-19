@@ -49,7 +49,7 @@ export default async function HomePage() {
                 </div>
               </div>
               <div className="order-1 lg:order-2">
-                <div className="relative aspect-[4/5] lg:aspect-square overflow-hidden rounded-2xl bg-gray-100">
+                <div className="relative aspect-4/5 lg:aspect-square overflow-hidden rounded-2xl bg-gray-100">
                   <Image
                     src="/homebild.svg"
                     alt="Bolla illustration"

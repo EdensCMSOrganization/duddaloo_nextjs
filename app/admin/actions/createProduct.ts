@@ -19,15 +19,17 @@ export async function createProduct(_prevState: unknown, formData: FormData) {
   try {
     await connectDB();
 
-    // Recoge todos los archivos de los 4 inputs porque todos tienen name="images"
     const files = formData.getAll("images") as File[];
     const uploadedUrls: string[] = [];
 
     const uploadDir = path.join(process.cwd(), "public/uploads");
     await mkdir(uploadDir, { recursive: true });
 
-    for (const file of files) {
-      // Solo procesamos archivos que existan y tengan tamaño (evita los inputs que se quedaron vacíos)
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const imageUrl = formData.get(`image-url-${i}`) as string;
+
+      // Prioritize file upload if it exists
       if (file && file.size > 0) {
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
@@ -36,6 +38,9 @@ export async function createProduct(_prevState: unknown, formData: FormData) {
 
         await writeFile(filePath, buffer);
         uploadedUrls.push(`/uploads/${fileName}`);
+      } else if (imageUrl) {
+        // If no file, use the URL from media library
+        uploadedUrls.push(imageUrl);
       }
     }
 

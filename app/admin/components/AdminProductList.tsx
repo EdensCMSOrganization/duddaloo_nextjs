@@ -22,8 +22,9 @@ export default async function AdminProductList() {
 
   return (
     <div className="space-y-6">
+    
       {plainProducts.map((product) => (
-        <div key={product._id} className="border rounded p-4">
+        <div key={product._id} className="border rounded p-4 ">
           <div className="flex justify-between items-start">
             <div>
               <h3 className="font-semibold">{product.name}</h3>

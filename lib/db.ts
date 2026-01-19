@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable for Isra Store');
+  throw new Error('Please define the MONGODB_URI environment variable for Dudaloo Store');
 }
 
 /**
@@ -40,7 +40,6 @@ export default async function connectDB() {
     };
 
     cached.promise = mongoose.connect(MONGODB_URI!, opts).then((m) => {
-      console.log('🔗 Isra Store: Connected to MongoDB');
       return m;
     });
   }
