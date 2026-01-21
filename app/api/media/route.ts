@@ -1,11 +1,17 @@
 // app/api/media/route.ts
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import { pipeline } from "stream";
 import { promisify } from "util";
+// SECURITY FIX: Import auth verification for media endpoints
+import { getAuthUserFromRequest } from "@/lib/auth";
 
 const pump = promisify(pipeline);
+
+// SECURITY FIX: Allowed MIME types for images
+const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 export async function GET() {
   const uploadsDir = path.join(process.cwd(), "public", "uploads");
@@ -27,13 +33,38 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    // SECURITY FIX: Verify user is authenticated before allowing media uploads
+    const user = getAuthUserFromRequest(request);
+    if (!user) {
+      return NextResponse.json(
+        { error: "Unauthorized: Authentication required" },
+        { status: 401 }
+      );
+    }
+
     const formData = await request.formData();
     const file = formData.get("file") as File;
 
     if (!file) {
       return NextResponse.json({ error: "No file found" }, { status: 400 });
+    }
+
+    // SECURITY FIX: Validate file MIME type
+    if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+      return NextResponse.json(
+        { error: `Invalid file type. Allowed: ${ALLOWED_MIME_TYPES.join(', ')}` },
+        { status: 400 }
+      );
+    }
+
+    // SECURITY FIX: Validate file size
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json(
+        { error: `File size exceeds ${MAX_FILE_SIZE / 1024 / 1024}MB limit` },
+        { status: 400 }
+      );
     }
 
     const uploadsDir = path.join(process.cwd(), "public", "uploads");
@@ -57,12 +88,29 @@ export async function POST(request: Request) {
   }
 }
 
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest) {
   try {
+    // SECURITY FIX: Verify user is authenticated before allowing media deletion
+    const user = getAuthUserFromRequest(request);
+    if (!user) {
+      return NextResponse.json(
+        { error: "Unauthorized: Authentication required" },
+        { status: 401 }
+      );
+    }
+
     const { name } = await request.json();
 
     if (!name) {
       return NextResponse.json({ error: "File name is required" }, { status: 400 });
+    }
+
+    // SECURITY FIX: Prevent directory traversal attacks
+    if (name.includes('..') || name.includes('/') || name.includes('\\')) {
+      return NextResponse.json(
+        { error: "Invalid file name" },
+        { status: 400 }
+      );
     }
 
     const filePath = path.join(process.cwd(), "public", "uploads", name);

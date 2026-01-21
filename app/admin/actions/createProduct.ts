@@ -7,6 +7,8 @@ import Product from "@/models/Product";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import Stripe from "stripe";
+// SECURITY FIX: Import auth verification for Server Actions
+import { requireAuthAction } from "@/lib/auth";
 
 const productSchema = z.object({
   name: z.string().min(1, "El nombre es obligatorio"),
@@ -19,6 +21,9 @@ const productSchema = z.object({
 
 export async function createProduct(_prevState: unknown, formData: FormData) {
   try {
+    // SECURITY FIX: Verify user is authenticated before allowing product creation
+    await requireAuthAction();
+    
     await connectDB();
 
     const files = formData.getAll("images") as File[];

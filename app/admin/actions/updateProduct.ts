@@ -7,6 +7,8 @@ import Product from "@/models/Product";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import Stripe from "stripe";
+// SECURITY FIX: Import auth verification for Server Actions
+import { requireAuthAction } from "@/lib/auth";
 
 // Definimos la interfaz para el objeto de actualización
 interface UpdatePayload {
@@ -30,6 +32,9 @@ const productUpdateSchema = z.object({
 
 export async function updateProduct(prevState: unknown, formData: FormData) {
   try {
+    // SECURITY FIX: Verify user is authenticated before allowing product updates
+    await requireAuthAction();
+    
     await connectDB();
 
     const id = formData.get("id") as string;

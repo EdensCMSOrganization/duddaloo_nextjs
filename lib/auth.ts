@@ -4,7 +4,17 @@ import { NextRequest } from 'next/server';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-export const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-for-dev';
+// SECURITY FIX: Validate JWT_SECRET exists in production
+const JWT_SECRET_FALLBACK = 'fallback-secret-for-dev';
+export const JWT_SECRET = process.env.JWT_SECRET || JWT_SECRET_FALLBACK;
+
+// SECURITY FIX: Warn if fallback secret is used in production
+if (process.env.NODE_ENV === 'production' && JWT_SECRET === JWT_SECRET_FALLBACK) {
+  throw new Error(
+    'SECURITY ERROR: JWT_SECRET environment variable is not defined in production. This is a critical security risk.'
+  );
+}
+
 export const SESSION_COOKIE_NAME = 'admin_session';
 
 export async function hashPassword(password: string): Promise<string> {
@@ -66,4 +76,12 @@ export function getAuthUserFromRequest(req: NextRequest): { userId: string } | n
   } catch {
     return null;
   }
+}
+// SECURITY FIX: Helper to verify authentication in Server Actions
+export async function requireAuthAction(): Promise<string> {
+  const user = await getAuthUser();
+  if (!user) {
+    throw new Error('Unauthorized: Authentication required');
+  }
+  return user.userId;
 }
