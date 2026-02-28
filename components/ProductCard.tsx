@@ -2,7 +2,7 @@
 
 import { useCartId } from "@/lib/cartUtils";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ShoppingCart, Heart, Eye } from "lucide-react";
 import Link from "next/link";
 import Toast from "./Toast";
@@ -21,6 +21,12 @@ interface Product {
   discountPercentage?: number;
 }
 
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
 export default function ProductCard({ product }: { product: Product }) {
   const cartId = useCartId();
   const [loading, setLoading] = useState(false);
@@ -30,6 +36,34 @@ export default function ProductCard({ product }: { product: Product }) {
     type: "success" | "error" | "info";
   } | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [categoryName, setCategoryName] = useState<string | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  // Cargar categorías al montar el componente
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/categories");
+        if (res.ok) {
+          const data = await res.json();
+          setCategories(data);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // Buscar el nombre de la categoría cuando tenemos el ID
+  useEffect(() => {
+    if (product.category && categories.length > 0) {
+      const foundCategory = categories.find(c => c._id === product.category);
+      if (foundCategory) {
+        setCategoryName(foundCategory.name);
+      }
+    }
+  }, [product.category, categories]);
 
   const discountedPrice =
     product.rabatt && product.discountPercentage
@@ -91,6 +125,7 @@ export default function ProductCard({ product }: { product: Product }) {
       )}
       <Link href={`/shop/${product._id}`} className="group block">
         <div className="relative overflow-hidden rounded-2xl bg-gray-50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+          {/* Kampanj - siempre visible si hay rabatt */}
           {product.rabatt && product.discountPercentage && (
             <div className="absolute top-3 left-3 z-10">
               <span className="inline-block px-3 py-1 text-xs font-bold rounded-full bg-red-500 text-white shadow-lg">
@@ -99,10 +134,11 @@ export default function ProductCard({ product }: { product: Product }) {
             </div>
           )}
 
-          {product.category && !product.rabatt && (
+          {/* Categoría - solo si existe y NO hay kampanj */}
+          {categoryName && !product.rabatt && (
             <div className="absolute top-3 left-3 z-10">
               <span className="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-white/90 backdrop-blur-sm text-gray-700">
-                {product.category}
+                {categoryName}
               </span>
             </div>
           )}
