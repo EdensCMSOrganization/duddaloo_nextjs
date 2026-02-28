@@ -1,4 +1,3 @@
-// components/ProductCard.tsx
 "use client";
 
 import { useCartId } from "@/lib/cartUtils";
@@ -9,22 +8,20 @@ import Link from "next/link";
 import Toast from "./Toast";
 import ErrorModal from "./ErrorModal";
 
-export default function ProductCard({
-  product,
-}: {
-  product: {
-    _id: string;
-    name: string;
-    description: string;
-    price: number;
-    images: string[];
-    inStock: boolean;
-    stock?: number;
-    category?: string;
-    rabatt?: boolean;
-    discountPercentage?: number;
-  };
-}) {
+interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  images: string[];
+  inStock: boolean;
+  stock?: number;
+  category?: string;
+  rabatt?: boolean;
+  discountPercentage?: number;
+}
+
+export default function ProductCard({ product }: { product: Product }) {
   const cartId = useCartId();
   const [loading, setLoading] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -94,7 +91,6 @@ export default function ProductCard({
       )}
       <Link href={`/shop/${product._id}`} className="group block">
         <div className="relative overflow-hidden rounded-2xl bg-gray-50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-          {/* Badge Kampany (Descuento) */}
           {product.rabatt && product.discountPercentage && (
             <div className="absolute top-3 left-3 z-10">
               <span className="inline-block px-3 py-1 text-xs font-bold rounded-full bg-red-500 text-white shadow-lg">
@@ -103,7 +99,6 @@ export default function ProductCard({
             </div>
           )}
 
-          {/* Badge de categoría */}
           {product.category && !product.rabatt && (
             <div className="absolute top-3 left-3 z-10">
               <span className="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-white/90 backdrop-blur-sm text-gray-700">
@@ -112,7 +107,6 @@ export default function ProductCard({
             </div>
           )}
 
-          {/* Badge de stock */}
           {!product.inStock && (
             <div className="absolute top-3 right-3 z-10">
               <span className="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-600">
@@ -121,14 +115,11 @@ export default function ProductCard({
             </div>
           )}
 
-          {/* Botones de acción */}
           <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button
               onClick={toggleWishlist}
               className="p-2 rounded-full bg-white/90 backdrop-blur-sm shadow-sm hover:bg-white hover:shadow-md transition-all"
-              aria-label={
-                isWishlisted ? "Remove from wishlist" : "Add to wishlist"
-              }
+              aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
             >
               <Heart
                 className={`h-4 w-4 ${isWishlisted ? "fill-red-500 text-red-500" : "text-gray-600"}`}
@@ -143,7 +134,6 @@ export default function ProductCard({
             </button>
           </div>
 
-          {/* Imagen del producto */}
           <div className="relative aspect-4/5 overflow-hidden">
             {product.images[0] ? (
               <Image
@@ -154,13 +144,12 @@ export default function ProductCard({
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               />
             ) : (
-              <div className="w-full h-full bg-lineart-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+              <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
                 <span className="text-gray-400">No image</span>
               </div>
             )}
           </div>
 
-          {/* Información del producto */}
           <div className="p-5">
             <div className="mb-2">
               <h3 className="font-serif text-lg font-medium text-gray-800 group-hover:text-purple-600 transition-colors line-clamp-1">
@@ -187,12 +176,11 @@ export default function ProductCard({
                     {product.price} SEK
                   </span>
                 )}
-                {product.inStock &&
-                  typeof (product as any).stock === "number" && (
-                    <p className="text-xs text-gray-500 mt-1">
-                      {(product as any).stock} kvar
-                    </p>
-                  )}
+                {product.inStock && typeof product.stock === "number" && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    {product.stock} kvar
+                  </p>
+                )}
               </div>
 
               <button

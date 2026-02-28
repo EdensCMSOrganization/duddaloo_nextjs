@@ -10,8 +10,8 @@ const ShopPage = async () => {
   return (
     <>
       <Navbar />
-      <div className="h-screen max-w-6xl mx-auto p-4">
-        <h1 className="text-2xl font-bold my-6">Produkter</h1>
+      <div className="h-screen max-w-6xl mx-auto p-4 py-12">
+        <h1 className="text-6xl font-bold my-6">Produkter</h1>
         {products.length === 0 ? (
           <p>Inga produkter tillgängliga.</p>
         ) : (

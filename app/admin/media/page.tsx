@@ -147,6 +147,7 @@ const MediaPage = () => {
 
   return (
     <div className="container mx-auto min-h-screen p-6">
+      <button className="mb-4 bg-blue-200 hover:bg-blue-300 px-4 py-2 rounded-lg" onClick={() => window.history.back()}>Go back</button>
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Media Library</h1>
