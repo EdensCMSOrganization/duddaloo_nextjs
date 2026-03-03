@@ -180,7 +180,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+              <div className="w-full h-full bg-linear-to-br from-gray-100 to-gray-200 flex items-center justify-center">
                 <span className="text-gray-400">No image</span>
               </div>
             )}
