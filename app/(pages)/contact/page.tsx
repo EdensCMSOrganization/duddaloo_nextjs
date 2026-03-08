@@ -18,7 +18,7 @@ const ContactPage = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             {/* Vänster kolumn: Kontaktinformation */}
-            <div className="space-y-10 flex flex-col lg:mt-6">
+            <div className="space-y-10 flex flex-col items-center lg:mt-6">
               <h2 className="text-2xl font-semibold mb-2">Kontaktinformation</h2>
               
               <div className="space-y-8">
