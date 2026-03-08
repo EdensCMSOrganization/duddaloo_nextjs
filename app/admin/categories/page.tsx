@@ -16,26 +16,26 @@ export default async function CategoriesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="container mx-auto min-h-screen bg-gray-50">
       <InactivityLogout timeoutMinutes={60} />
 
       <div className="flex">
-        <AdminAsyde />
+        {/* <AdminAsyde /> */}
 
         <main className="flex-1 p-6">
           <div className="mb-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-800">Categories</h2>
-                <p className="text-gray-600">Manage product categories</p>
+                <h2 className="text-2xl font-bold text-gray-800">Kategorier</h2>
+                <p className="text-gray-600">Hantera produktkategorier</p>
               </div>
 
               <div className="flex gap-4">
                 <Link
                   href="/admin"
-                  className="inline-flex items-center justify-center gap-2 bg-gray-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-700 transition-colors shadow-lg"
+                  className="inline-flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors shadow-lg"
                 >
-                  Back to Products
+                  Tillbaka till Produkter
                 </Link>
 
                 <div className="w-48">
@@ -46,21 +46,21 @@ export default async function CategoriesPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Create Category */}
+            {/* Skapa kategori */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-6">
                 <h3 className="text-lg font-bold text-gray-800 mb-4">
-                  Create Category
+                  Skapa kategori
                 </h3>
                 <CreateCategoryForm />
               </div>
             </div>
 
-            {/* Categories List */}
+            {/* Kategorilista */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                 <h3 className="text-lg font-bold text-gray-800 mb-4">
-                  All Categories
+                  Alla kategorier
                 </h3>
                 <CategoryList />
               </div>

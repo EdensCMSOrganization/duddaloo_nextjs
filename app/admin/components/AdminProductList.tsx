@@ -9,7 +9,7 @@ export default async function AdminProductList() {
   const products = await Product.find({}).sort({ createdAt: -1 }).lean();
 
   if (products.length === 0) {
-    return <p>No products yet.</p>;
+    return <p>Inga produkter än.</p>;
   }
 
   const plainProducts = products.map(doc => ({
@@ -24,14 +24,14 @@ export default async function AdminProductList() {
     <div className="space-y-6">
       {plainProducts.map((product) => (
         <div key={product._id} className="border rounded p-4 bg-white relative">
-          {/* Añadir un overlay cuando el formulario está abierto */}
+          {/* Lägg till ett overlay när formuläret är öppet */}
           <div className="details-overlay">
             <div className="flex justify-between items-start">
               <div>
                 <h3 className="font-semibold">{product.name}</h3>
                 <p className="text-gray-600 text-sm line-clamp-2">{product.description}</p>
                 <p className="mt-1 text-sm">
-                  {product.price} SEK • Stock: {product.stock} • {product.inStock ? 'In Stock' : 'Out of Stock'}
+                  {product.price} SEK • Lager: {product.stock} • {product.inStock ? 'I lager' : 'Slut i lager'}
                 </p>
               </div>
               <div className="flex gap-2">
@@ -42,7 +42,7 @@ export default async function AdminProductList() {
             <div className="mt-4">
               <details className="group">
                 <summary className="cursor-pointer text-blue-600 hover:underline">
-                  Edit product
+                  Redigera produkt
                 </summary>
                 <div className="mt-4 relative">
                   <EditProductForm product={product} />

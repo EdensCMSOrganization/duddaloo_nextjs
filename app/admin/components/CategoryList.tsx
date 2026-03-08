@@ -8,7 +8,7 @@ export default async function CategoryList() {
   const categories = await Category.find({}).sort({ createdAt: -1 }).lean();
 
   if (categories.length === 0) {
-    return <p className="text-gray-600">No categories yet.</p>;
+    return <p className="text-gray-600">Inga kategorier än.</p>;
   }
 
   return (

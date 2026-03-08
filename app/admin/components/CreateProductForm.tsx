@@ -39,10 +39,10 @@ function SubmitButton() {
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             />
           </svg>
-          Processing...
+          Bearbetar...
         </span>
       ) : (
-        "Create Product"
+        "Skapa produkt"
       )}
     </button>
   );
@@ -72,7 +72,7 @@ export default function CreateProductForm() {
   const [activeImageIndex, setActiveImageIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    // Cargar categorías
+    // Ladda kategorier
     const fetchCategories = async () => {
       const res = await fetch("/api/categories");
       const data = await res.json();
@@ -100,7 +100,7 @@ export default function CreateProductForm() {
       newPreviews[index] = URL.createObjectURL(file);
       setPreviews(newPreviews);
 
-      // Clear the URL input if file is selected
+      // Rensa URL-inmatningen om fil är vald
       const newUrls = [...imageUrls];
       newUrls[index] = null;
       setImageUrls(newUrls);
@@ -133,7 +133,7 @@ export default function CreateProductForm() {
   };
 
   const handleFormAction = (formData: FormData) => {
-    // Add image URLs to formData
+    // Lägg till bild-URL:er till formData
     imageUrls.forEach((url, index) => {
       if (url) {
         formData.append(`image-url-${index}`, url);
@@ -184,7 +184,7 @@ export default function CreateProductForm() {
                 d="M5 13l4 4L19 7"
               />
             </svg>
-            Product created successfully! ✅
+            Produkten skapades framgångsrikt! ✅
           </div>
         )}
 
@@ -203,7 +203,7 @@ export default function CreateProductForm() {
                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
               />
             </svg>
-            Product Images (Max 4)
+            Produktbilder (Max 4)
           </label>
           <div className="grid grid-cols-2 gap-3">
             {[0, 1, 2, 3].map((index) => (
@@ -211,7 +211,7 @@ export default function CreateProductForm() {
                 <div className="relative w-full aspect-square border-2 border-dashed border-gray-300 rounded-xl overflow-hidden bg-gray-50 hover:border-green-400 transition-colors group">
                   <Image
                     src={previews[index] || UPLOAD_PLACEHOLDER}
-                    alt={`Preview ${index}`}
+                    alt={`Förhandsgranskning ${index}`}
                     fill
                     className={
                       previews[index]
@@ -255,7 +255,7 @@ export default function CreateProductForm() {
                   onClick={() => openMediaLibrary(index)}
                   className="w-full text-sm mt-2 bg-blue-500 text-white py-1 rounded-md hover:bg-blue-600"
                 >
-                  Choose from Library
+                  Välj från bibliotek
                 </button>
               </div>
             ))}
@@ -265,19 +265,19 @@ export default function CreateProductForm() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <label className="text-sm font-semibold text-gray-700">
-              Product Name
+              Produktnamn
             </label>
             <input
               type="text"
               name="name"
               required
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-              placeholder="Enter product name"
+              placeholder="Ange produktnamn"
             />
           </div>
           <div className="space-y-2">
             <label className="text-sm font-semibold text-gray-700">
-              Price (SEK)
+              Pris (SEK)
             </label>
             <input
               type="number"
@@ -291,14 +291,14 @@ export default function CreateProductForm() {
           </div>
           <div className="space-y-2">
             <label className="text-sm font-semibold text-gray-700">
-              Category
+              Kategori
             </label>
             <select
               name="category"
               required
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
             >
-              <option value="">Select a category</option>
+              <option value="">Välj en kategori</option>
               {categories.map((cat) => (
                 <option key={cat._id} value={cat._id}>
                   {cat.name}
@@ -308,7 +308,7 @@ export default function CreateProductForm() {
           </div>
           <div className="space-y-2">
             <label className="text-sm font-semibold text-gray-700">
-              Stock Quantity
+              Lagerantal
             </label>
             <input
               type="number"
@@ -335,14 +335,14 @@ export default function CreateProductForm() {
             htmlFor="rabatt"
             className="text-sm font-semibold text-gray-700 flex items-center gap-2"
           >
-            🏷️ Rabatt (Discount)
+            🏷️ Rabatt
           </label>
         </div>
 
         {showDiscount && (
           <div className="space-y-2">
             <label className="text-sm font-semibold text-gray-700">
-              Discount Percentage (%)
+              Rabattprocent (%)
             </label>
             <input
               type="number"
@@ -352,21 +352,21 @@ export default function CreateProductForm() {
               step="1"
               defaultValue="0"
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-              placeholder="e.g., 20"
+              placeholder="t.ex. 20"
             />
           </div>
         )}
 
         <div className="space-y-2">
           <label className="text-sm font-semibold text-gray-700">
-            Description
+            Beskrivning
           </label>
           <textarea
             name="description"
             required
             rows={4}
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all resize-none"
-            placeholder="Describe your product in detail..."
+            placeholder="Beskriv din produkt i detalj..."
           />
         </div>
 

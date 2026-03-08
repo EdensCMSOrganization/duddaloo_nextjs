@@ -3,12 +3,12 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { 
-  Upload, 
-  Trash2, 
-  Copy, 
-  Image as ImageIcon, 
-  Loader2, 
+import {
+  Upload,
+  Trash2,
+  Copy,
+  Image as ImageIcon,
+  Loader2,
   CheckCircle,
   AlertCircle,
   X
@@ -35,13 +35,13 @@ const MediaPage = () => {
       setLoading(true);
       const res = await fetch("/api/media");
       if (!res.ok) {
-        throw new Error("Failed to fetch images");
+        throw new Error("Misslyckades med att hämta bilder");
       }
       const data = await res.json();
       setImages(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An unknown error occurred");
-      showNotification("Failed to load images", "error");
+      setError(err instanceof Error ? err.message : "Ett okänt fel inträffade");
+      showNotification("Misslyckades med att ladda bilder", "error");
     } finally {
       setLoading(false);
     }
@@ -59,12 +59,12 @@ const MediaPage = () => {
   const handleCopyUrl = (url: string) => {
     const fullUrl = `${window.location.origin}${url}`;
     navigator.clipboard.writeText(fullUrl);
-    showNotification("Image URL copied to clipboard!", "success");
+    showNotification("Bild-URL kopierad till urklipp!", "success");
   };
 
   const handleDelete = async (name: string) => {
-    if (!confirm("Are you sure you want to delete this image?")) return;
-    
+    if (!confirm("Är du säker på att du vill ta bort denna bild?")) return;
+
     try {
       const res = await fetch("/api/media", {
         method: "DELETE",
@@ -75,13 +75,13 @@ const MediaPage = () => {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to delete image");
+        throw new Error("Misslyckades med att ta bort bild");
       }
 
       setImages(images.filter((image) => image.name !== name));
-      showNotification("Image deleted successfully!", "success");
+      showNotification("Bilden togs bort framgångsrikt!", "success");
     } catch (err) {
-      showNotification(err instanceof Error ? err.message : "An unknown error occurred", "error");
+      showNotification(err instanceof Error ? err.message : "Ett okänt fel inträffade", "error");
     }
   };
 
@@ -114,10 +114,10 @@ const MediaPage = () => {
 
   const uploadFiles = async (files: File[]) => {
     setUploading(true);
-    
+
     for (const file of files) {
       if (!file.type.startsWith('image/')) {
-        showNotification(`Skipping non-image file: ${file.name}`, "error");
+        showNotification(`Hopper över icke-bildfil: ${file.name}`, "error");
         continue;
       }
 
@@ -131,34 +131,34 @@ const MediaPage = () => {
         });
 
         if (!res.ok) {
-          throw new Error("Failed to upload image");
+          throw new Error("Misslyckades med att ladda upp bild");
         }
 
         const newImage = await res.json();
         setImages(prev => [newImage, ...prev]);
-        showNotification(`${file.name} uploaded successfully!`, "success");
+        showNotification(`${file.name} laddades upp framgångsrikt!`, "success");
       } catch (err) {
-        showNotification(err instanceof Error ? err.message : "An unknown error occurred", "error");
+        showNotification(err instanceof Error ? err.message : "Ett okänt fel inträffade", "error");
       }
     }
-    
+
     setUploading(false);
   };
 
   return (
     <div className="container mx-auto min-h-screen p-6">
-      <button className="mb-4 bg-blue-200 hover:bg-blue-300 px-4 py-2 rounded-lg" onClick={() => window.history.back()}>Go back</button>
-      {/* Header */}
+      <button className="mb-4 bg-blue-200 hover:bg-blue-300 px-4 py-2 rounded-lg" onClick={() => window.history.back()}>Gå tillbaka</button>
+      {/* Rubrik */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Media Library</h1>
-        <p className="text-gray-600 mt-2">Upload and manage your images</p>
+        <h1 className="text-3xl font-bold text-gray-900">Mediebibliotek</h1>
+        <p className="text-gray-600 mt-2">Ladda upp och hantera dina bilder</p>
       </div>
 
-      {/* Upload Area */}
+      {/* Uppladdningsområde */}
       <div
         className={`relative border-2 border-dashed rounded-xl p-8 mb-8 transition-all duration-200 ${
-          dragActive 
-            ? "border-blue-500 bg-blue-50 border-solid" 
+          dragActive
+            ? "border-blue-500 bg-blue-50 border-solid"
             : "border-gray-300 hover:border-gray-400"
         }`}
         onDragEnter={handleDrag}
@@ -183,18 +183,18 @@ const MediaPage = () => {
             )}
           </div>
           <p className="text-lg font-medium text-gray-700 mb-2">
-            {uploading ? "Uploading..." : "Drag & drop files here"}
+            {uploading ? "Laddar upp..." : "Dra och släpp filer här"}
           </p>
-          <p className="text-gray-500 mb-4">or click to browse</p>
-          <p className="text-sm text-gray-400">Supports: JPG, PNG, GIF, WebP</p>
+          <p className="text-gray-500 mb-4">eller klicka för att bläddra</p>
+          <p className="text-sm text-gray-400">Stöder: JPG, PNG, GIF, WebP</p>
         </label>
       </div>
 
-      {/* Notification */}
+      {/* Meddelande */}
       {notification && (
         <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg ${
-          notification.type === 'success' 
-            ? 'bg-green-50 text-green-800 border border-green-200' 
+          notification.type === 'success'
+            ? 'bg-green-50 text-green-800 border border-green-200'
             : 'bg-red-50 text-red-800 border border-red-200'
         }`}>
           {notification.type === 'success' ? (
@@ -209,7 +209,7 @@ const MediaPage = () => {
         </div>
       )}
 
-      {/* Image Grid */}
+      {/* Bildgalleri */}
       {loading ? (
         <div className="flex items-center justify-center h-64">
           <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
@@ -218,23 +218,23 @@ const MediaPage = () => {
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
           <AlertCircle className="w-5 h-5 text-red-500" />
           <div>
-            <p className="font-medium text-red-800">Error loading images</p>
+            <p className="font-medium text-red-800">Fel vid laddning av bilder</p>
             <p className="text-sm text-red-600">{error}</p>
           </div>
         </div>
       ) : (
         <>
-          {/* Stats */}
+          {/* Statistik */}
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <ImageIcon className="w-5 h-5 text-gray-500" />
               <span className="text-gray-700">
-                {images.length} {images.length === 1 ? 'image' : 'images'}
+                {images.length} {images.length === 1 ? 'bild' : 'bilder'}
               </span>
             </div>
           </div>
 
-          {/* Images Grid */}
+          {/* Bildernas rutnät */}
           {images.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
               {images.map((image) => (
@@ -252,8 +252,8 @@ const MediaPage = () => {
                       onClick={() => setSelectedImage(image)}
                     />
                   </div>
-                  
-                  {/* Overlay on hover */}
+
+                  {/* Överlagring vid hover */}
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2">
                     <button
                       onClick={(e) => {
@@ -261,7 +261,7 @@ const MediaPage = () => {
                         handleCopyUrl(image.url);
                       }}
                       className="bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full transition-colors duration-200"
-                      title="Copy URL"
+                      title="Kopiera URL"
                     >
                       <Copy className="w-4 h-4" />
                     </button>
@@ -271,13 +271,13 @@ const MediaPage = () => {
                         handleDelete(image.name);
                       }}
                       className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors duration-200"
-                      title="Delete"
+                      title="Ta bort"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
-                  
-                  {/* Image info */}
+
+                  {/* Bildinformation */}
                   <div className="p-3">
                     <p className="text-sm font-medium text-gray-900 truncate">
                       {image.name}
@@ -292,24 +292,24 @@ const MediaPage = () => {
           ) : (
             <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
               <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No images yet</h3>
-              <p className="text-gray-500 mb-6">Upload your first image to get started</p>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Inga bilder än</h3>
+              <p className="text-gray-500 mb-6">Ladda upp din första bild för att komma igång</p>
               <label htmlFor="file-upload" className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 cursor-pointer">
                 <Upload className="w-4 h-4" />
-                Upload Images
+                Ladda upp bilder
               </label>
             </div>
           )}
         </>
       )}
 
-      {/* Image Modal */}
+      {/* Bildmodal */}
       {selectedImage && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedImage(null)}
         >
-          <div 
+          <div
             className="bg-white rounded-lg max-w-4xl max-h-[90vh] overflow-auto"
             onClick={(e) => e.stopPropagation()}
           >
@@ -337,7 +337,7 @@ const MediaPage = () => {
                   className="flex-1 flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition-colors duration-200"
                 >
                   <Copy className="w-4 h-4" />
-                  Copy URL
+                  Kopiera URL
                 </button>
                 <button
                   onClick={() => {
@@ -347,7 +347,7 @@ const MediaPage = () => {
                   className="flex-1 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition-colors duration-200"
                 >
                   <Trash2 className="w-4 h-4" />
-                  Delete
+                  Ta bort
                 </button>
               </div>
             </div>

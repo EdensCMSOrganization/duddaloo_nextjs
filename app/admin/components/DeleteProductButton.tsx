@@ -19,7 +19,7 @@ export default function DeleteProductButton({ productId }: { productId: string }
       onClick={handleDelete}
       className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
     >
-      Delete
+      Radera
     </button>
   );
 }

@@ -17,10 +17,10 @@ export default function InactivityLogout({ timeoutMinutes = 60 }: InactivityLogo
       if (response.ok) {
         router.push('/login?sessionExpired=true');
       } else {
-        console.error('Failed to logout due to inactivity');
+        console.error('Utloggning misslyckades på grund av inaktivitet');
       }
     } catch (error) {
-      console.error('Error during inactivity logout:', error);
+      console.error('Fel vid utloggning på grund av inaktivitet:', error);
     }
   }, [router]);
 

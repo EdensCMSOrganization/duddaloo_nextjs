@@ -11,7 +11,7 @@ export default function AdminContent({
   productList: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="container mx-auto min-h-screen bg-gray-50">
       <InactivityLogout timeoutMinutes={60} />
 
       <div className="flex">
@@ -22,9 +22,9 @@ export default function AdminContent({
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-bold text-gray-800">
-                  Product Management
+                  Produktadministration
                 </h2>
-                <p className="text-gray-600">View and manage all products</p>
+                <p className="text-gray-600">Visa och hantera alla produkter</p>
               </div>
 
               <div className="flex gap-4">
@@ -32,7 +32,7 @@ export default function AdminContent({
                   href="/"
                   className="inline-flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors shadow-lg"
                 >
-                  Back to Home
+                  Tillbaka till startsidan
                 </Link>
 
                 <div className="w-48">
@@ -50,14 +50,13 @@ export default function AdminContent({
             <div className="bg-[linear-gradient(90deg,#f5f3ff,#ede9fe)] rounded-xl p-4 border border-purple-100">
               <h4 className="font-semibold text-gray-800 mb-2">Tips</h4>
               <p className="text-sm text-gray-600">
-                Add clear product images and detailed descriptions for better
-                conversion.
+                Lägg till tydliga produktbilder och detaljerade beskrivningar för bättre konvertering.
               </p>
             </div>
             <div className="bg-[linear-gradient(90deg,#fffbeb,#fef3c7)] rounded-xl p-4 border border-yellow-100">
-              <h4 className="font-semibold text-gray-800 mb-2">Quality</h4>
+              <h4 className="font-semibold text-gray-800 mb-2">Kvalitet</h4>
               <p className="text-sm text-gray-600">
-                Ensure all product information is accurate and up-to-date.
+                Se till att all produktinformation är korrekt och uppdaterad.
               </p>
             </div>
           </div>

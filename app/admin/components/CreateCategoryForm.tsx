@@ -13,7 +13,7 @@ function SubmitButton() {
       className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50"
       disabled={pending}
     >
-      {pending ? "Creating..." : "Add Category"}
+      {pending ? "Skapar..." : "Lägg till kategori"}
     </button>
   );
 }
@@ -41,56 +41,55 @@ export default function CreateCategoryForm() {
 
       {state?.success && (
         <p className="text-green-600 text-sm bg-green-50 p-2 rounded">
-          ✅ Category created!
+          ✅ Kategorin skapades!
         </p>
       )}
 
       <div>
-        <label className="block text-sm font-medium mb-1">Category Name</label>
+        <label className="block text-sm font-medium mb-1">Kategorinamn</label>
         <input
           type="text"
           name="name"
           required
           className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-          placeholder="e.g., Posters"
+          placeholder="t.ex. Affischer"
         />
       </div>
 
       <div>
         <label className="block text-sm font-medium mb-1">
-          Slug (optional)
+          Slug (valfritt)
         </label>
         <input
           type="text"
           name="slug"
           className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-          placeholder="auto-generated from name"
+          placeholder="autogenereras från namn"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Description</label>
+        <label className="block text-sm font-medium mb-1">Beskrivning</label>
         <textarea
           name="description"
           rows={2}
           className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 resize-none"
-          placeholder="Optional description"
+          placeholder="Valfri beskrivning"
         />
       </div>
 
       <div>
         <label className="block text-sm font-medium mb-1">
-          📏 Tamaños disponibles (opcional)
+          📏 Tillgängliga storlekar (valfritt)
         </label>
         <input
           type="text"
           name="sizes"
           className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-          placeholder="e.g., XS, S, M, L, XL (separados por comas)"
+          placeholder="t.ex. XS, S, M, L, XL (separerade med kommatecken)"
         />
         <p className="text-xs text-gray-500 mt-1">
-          Si esta categoría tiene variaciones de tamaño, ingresalas aquí. Dejar
-          en blanco si no aplica (ej: Libros).
+          Om denna kategori har storleksvarianter, ange dem här. Lämna tomt om inte tillämpligt (t.ex. Böcker).
         </p>
       </div>
 

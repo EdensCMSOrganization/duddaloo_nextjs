@@ -18,16 +18,16 @@ export default function TwoFactorStatus({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // SECURITY FIX: Fetch TOTP status on mount
+  // SÄKERHETSÅTGÄRD: Hämta TOTP-status vid mount
   useEffect(() => {
     const checkTOTPStatus = async () => {
       try {
-        // Since there's no dedicated endpoint to check status,
-        // we can determine it by attempting to access protected resources
-        // For now, we'll set a placeholder - in production, add a /api/auth/totp/status endpoint
+        // Eftersom det inte finns en dedikerad endpoint för att kontrollera status,
+        // kan vi avgöra det genom att försöka komma åt skyddade resurser
+        // För nu ställer vi en platshållare - i produktion, lägg till en /api/auth/totp/status endpoint
         setLoading(false);
       } catch (err) {
-        console.error("Error checking TOTP status:", err);
+        console.error("Fel vid kontroll av TOTP-status:", err);
         setLoading(false);
       }
     };
@@ -35,10 +35,10 @@ export default function TwoFactorStatus({
     checkTOTPStatus();
   }, []);
 
-  // SECURITY FIX: Disable TOTP
+  // SÄKERHETSÅTGÄRD: Inaktivera TOTP
   const handleDisableTOTP = async () => {
     if (!password) {
-      setError("Password is required");
+      setError("Lösenord krävs");
       return;
     }
 
@@ -54,29 +54,29 @@ export default function TwoFactorStatus({
       });
 
       if (!response.ok) {
-        throw new Error("Failed to disable TOTP");
+        throw new Error("Misslyckades med att inaktivera TOTP");
       }
 
       setIsEnabled(false);
       setPassword("");
       setShowPasswordForm(false);
-      setSuccess("Two-Factor Authentication has been disabled");
+      setSuccess("Tvåfaktorsautentisering har inaktiverats");
       onStatusChange?.(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to disable TOTP");
+      setError(err instanceof Error ? err.message : "Misslyckades med att inaktivera TOTP");
     } finally {
       setDisabling(false);
     }
   };
 
   if (loading) {
-    return <div className="text-gray-500">Loading 2FA status...</div>;
+    return <div className="text-gray-500">Laddar 2FA-status...</div>;
   }
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold">Two-Factor Authentication</h3>
+        <h3 className="text-lg font-semibold">Tvåfaktorsautentisering</h3>
         <div
           className={`px-3 py-1 rounded-full text-sm font-semibold ${
             isEnabled
@@ -84,15 +84,15 @@ export default function TwoFactorStatus({
               : "bg-gray-100 text-gray-800"
           }`}
         >
-          {isEnabled ? "🔒 Enabled" : "🔓 Disabled"}
+          {isEnabled ? "🔒 Aktiverad" : "🔓 Inaktiverad"}
         </div>
       </div>
 
       {isEnabled ? (
         <div className="space-y-4">
           <p className="text-gray-600">
-            Your account is protected with Two-Factor Authentication. You&apos;ll
-            need a code from your authenticator app to log in.
+            Ditt konto är skyddat med tvåfaktorsautentisering. Du behöver en kod från
+            din autentiseringsapp för att logga in.
           </p>
 
           {error && (
@@ -112,16 +112,16 @@ export default function TwoFactorStatus({
               onClick={() => setShowPasswordForm(true)}
               className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
             >
-              Disable 2FA
+              Inaktivera 2FA
             </button>
           ) : (
             <div className="space-y-3 bg-red-50 p-4 rounded-lg">
               <p className="text-sm text-gray-700 font-semibold">
-                Enter your password to disable 2FA:
+                Ange ditt lösenord för att inaktivera 2FA:
               </p>
               <input
                 type="password"
-                placeholder="Password"
+                placeholder="Lösenord"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-2 border rounded-lg"
@@ -135,14 +135,14 @@ export default function TwoFactorStatus({
                   }}
                   className="flex-1 bg-gray-300 text-gray-800 py-2 rounded-lg hover:bg-gray-400"
                 >
-                  Cancel
+                  Avbryt
                 </button>
                 <button
                   onClick={handleDisableTOTP}
                   disabled={disabling || !password}
                   className="flex-1 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 disabled:opacity-50"
                 >
-                  {disabling ? "Disabling..." : "Confirm Disable"}
+                  {disabling ? "Inaktiverar..." : "Bekräfta inaktivering"}
                 </button>
               </div>
             </div>
@@ -150,8 +150,8 @@ export default function TwoFactorStatus({
         </div>
       ) : (
         <p className="text-gray-600">
-          Two-Factor Authentication is not enabled. Enable it to add an extra
-          layer of security to your account.
+          Tvåfaktorsautentisering är inte aktiverad. Aktivera den för att lägga till
+          ett extra säkerhetsskikt till ditt konto.
         </p>
       )}
     </div>

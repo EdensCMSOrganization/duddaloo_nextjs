@@ -18,7 +18,7 @@ function SubmitButton() {
       className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50"
       disabled={pending}
     >
-      {pending ? "Saving..." : "Update Product"}
+      {pending ? "Sparar..." : "Uppdatera produkt"}
     </button>
   );
 }
@@ -71,7 +71,7 @@ export default function EditProductForm({
 
   useEffect(() => {
     if (state?.success) {
-      alert("Product updated ✅");
+      alert("Produkten uppdaterad ✅");
     }
   }, [state]);
 
@@ -117,7 +117,7 @@ export default function EditProductForm({
 
         <div>
           <label className="block text-sm font-semibold mb-2">
-            Images (Max 4)
+            Bilder (Max 4)
           </label>
           <div className="flex flex-wrap gap-3">
             {[0, 1, 2, 3].map((index) => (
@@ -125,7 +125,7 @@ export default function EditProductForm({
                 <div className="relative w-20 h-20 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden bg-white hover:border-blue-400">
                   <Image
                     src={previews[index] || UPLOAD_PLACEHOLDER}
-                    alt="Preview"
+                    alt="Förhandsvisning"
                     fill
                     className={
                       previews[index]
@@ -139,7 +139,7 @@ export default function EditProductForm({
                     htmlFor={`edit-img-${product._id}-${index}`}
                     className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded text-center cursor-pointer hover:bg-blue-200"
                   >
-                    Upload
+                    Ladda upp
                   </label>
                   <input
                     type="file"
@@ -154,7 +154,7 @@ export default function EditProductForm({
                     onClick={() => openMediaLibrary(index)}
                     className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200"
                   >
-                    From Library
+                    Från bibliotek
                   </button>
                 </div>
               </div>
@@ -164,7 +164,7 @@ export default function EditProductForm({
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium">Name</label>
+            <label className="block text-sm font-medium">Namn</label>
             <input
               type="text"
               name="name"
@@ -174,7 +174,7 @@ export default function EditProductForm({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium">Price (SEK)</label>
+            <label className="block text-sm font-medium">Pris (SEK)</label>
             <input
               type="number"
               name="price"
@@ -184,14 +184,14 @@ export default function EditProductForm({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium">Category</label>
+            <label className="block text-sm font-medium">Kategori</label>
             <select
               name="category"
               required
               defaultValue={product.category || ""}
               className="w-full p-2 border rounded"
             >
-              <option value="">Select a category</option>
+              <option value="">Välj en kategori</option>
               {categories.map((cat) => (
                 <option key={cat._id} value={cat._id}>
                   {cat.name}
@@ -200,7 +200,7 @@ export default function EditProductForm({
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium">Stock Quantity</label>
+            <label className="block text-sm font-medium">Lagersaldo</label>
             <input
               type="number"
               name="stock"
@@ -232,7 +232,7 @@ export default function EditProductForm({
 
         {showDiscount && (
           <div>
-            <label className="block text-sm font-medium mb-1">Discount %</label>
+            <label className="block text-sm font-medium mb-1">Rabatt %</label>
             <input
               type="number"
               name="discountPercentage"
@@ -246,7 +246,7 @@ export default function EditProductForm({
         )}
 
         <div>
-          <label className="block text-sm font-medium">Description</label>
+          <label className="block text-sm font-medium">Beskrivning</label>
           <textarea
             name="description"
             defaultValue={product.description}
@@ -268,7 +268,7 @@ export default function EditProductForm({
             htmlFor={`stock-${product._id}`}
             className="text-sm font-medium"
           >
-            In Stock
+            I lager
           </label>
         </div>
 
@@ -277,7 +277,7 @@ export default function EditProductForm({
         </div>
       </form>
 
-      {/* Media Library Modal - Renderizado via Portal */}
+      {/* Media Library Modal - Renderas via Portal */}
       <MediaLibraryModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

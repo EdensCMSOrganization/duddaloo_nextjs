@@ -13,7 +13,7 @@ function SubmitButton() {
       className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 disabled:opacity-50"
       disabled={pending}
     >
-      {pending ? "Saving..." : "Save"}
+      {pending ? "Sparar..." : "Spara"}
     </button>
   );
 }
@@ -54,7 +54,7 @@ export default function EditCategoryForm({
           <p className="text-sm text-gray-600">{category.description}</p>
           {category.sizes && category.sizes.length > 0 && (
             <p className="text-xs text-blue-600 mt-1">
-              📏 Tamaños: {category.sizes.join(", ")}
+              📏 Storlekar: {category.sizes.join(", ")}
             </p>
           )}
         </div>
@@ -63,7 +63,7 @@ export default function EditCategoryForm({
             onClick={() => setIsEditing(true)}
             className="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200"
           >
-            ✏️ Edit
+            ✏️ Redigera
           </button>
           <DeleteCategoryButton categoryId={category._id} />
         </div>
@@ -81,11 +81,11 @@ export default function EditCategoryForm({
       {state?.error && <p className="text-red-600 text-sm">{state.error}</p>}
 
       {state?.success && (
-        <p className="text-green-600 text-sm">✅ Category updated!</p>
+        <p className="text-green-600 text-sm">✅ Kategorin uppdaterad!</p>
       )}
 
       <div>
-        <label className="block text-sm font-medium mb-1">Category Name</label>
+        <label className="block text-sm font-medium mb-1">Kategorinamn</label>
         <input
           type="text"
           name="name"
@@ -96,29 +96,29 @@ export default function EditCategoryForm({
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Description</label>
+        <label className="block text-sm font-medium mb-1">Beskrivning</label>
         <textarea
           name="description"
           defaultValue={category.description || ""}
           rows={2}
           className="w-full p-2 border rounded text-sm resize-none"
-          placeholder="Optional description"
+          placeholder="Valfri beskrivning"
         />
       </div>
 
       <div>
         <label className="block text-sm font-medium mb-1">
-          📏 Tamaños disponibles
+          📏 Tillgängliga storlekar
         </label>
         <input
           type="text"
           name="sizes"
           defaultValue={category.sizes ? category.sizes.join(", ") : ""}
           className="w-full p-2 border rounded text-sm"
-          placeholder="e.g., XS, S, M, L, XL (separados por comas)"
+          placeholder="t.ex. XS, S, M, L, XL (separerade med kommatecken)"
         />
         <p className="text-xs text-gray-500 mt-1">
-          Dejar en blanco si no aplica (ej: para Libros)
+          Lämna tomt om inte tillämpligt (t.ex. för Böcker)
         </p>
       </div>
 
@@ -129,7 +129,7 @@ export default function EditCategoryForm({
           onClick={() => setIsEditing(false)}
           className="px-3 py-1 bg-gray-300 text-gray-700 rounded text-sm hover:bg-gray-400"
         >
-          Cancel
+          Avbryt
         </button>
       </div>
     </form>
