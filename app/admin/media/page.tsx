@@ -56,9 +56,10 @@ const MediaPage = () => {
     setTimeout(() => setNotification(null), 3000);
   };
 
+ // Cambia esto en handleCopyUrl:
   const handleCopyUrl = (url: string) => {
-    const fullUrl = `${window.location.origin}${url}`;
-    navigator.clipboard.writeText(fullUrl);
+    // No hace falta concatenar window.location.origin
+    navigator.clipboard.writeText(url);
     showNotification("Bild-URL kopierad till urklipp!", "success");
   };
 
