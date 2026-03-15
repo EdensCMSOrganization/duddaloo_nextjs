@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // SECURITY FIX: State for TOTP verification
+  // SÄKERHETSÅTGÄRD: State för TOTP-verifiering
   const [totpToken, setTotpToken] = useState('');
   const [requiresTOTP, setRequiresTOTP] = useState(false);
   const [error, setError] = useState('');
@@ -18,40 +18,40 @@ export default function LoginPage() {
     setError('');
 
     try {
-      // SECURITY FIX: Send TOTP token if required
+      // SÄKERHETSÅTGÄRD: Skicka TOTP-token om det krävs
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          email, 
+        body: JSON.stringify({
+          email,
           password,
-          ...(requiresTOTP && { totpToken }) // Include TOTP token if needed
+          ...(requiresTOTP && { totpToken }) // Inkludera TOTP-token om det behövs
         }),
       });
 
       const data = await res.json();
 
-      // SECURITY FIX: Handle TOTP requirement
+      // SÄKERHETSÅTGÄRD: Hantera TOTP-krav
       if (data.requiresTOTP && !requiresTOTP) {
         setRequiresTOTP(true);
-        setPassword(''); // Clear password from state for security
+        setPassword(''); // Rensa lösenordet från state av säkerhetsskäl
         return;
       }
 
       if (res.ok) {
         router.push('/admin');
       } else {
-        setError(data.error || 'Incorrect credentials');
+        setError(data.error || 'Felaktiga inloggningsuppgifter');
       }
     } catch (err) {
-      setError('Network error');
+      setError('Nätverksfel');
     }
   };
 
   return (
     <div className="h-screen max-w-md mx-auto p-8">
       <h1 className="text-2xl font-bold mb-4">
-        {requiresTOTP ? '2FA Verification' : 'Sign In'}
+        {requiresTOTP ? '2FA-verifiering' : 'Logga in'}
       </h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit}>
@@ -59,7 +59,7 @@ export default function LoginPage() {
           <>
             <input
               type="email"
-              placeholder="Email"
+              placeholder="E-post"
               className="w-full p-2 mb-4 border rounded"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -67,7 +67,7 @@ export default function LoginPage() {
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Lösenord"
               className="w-full p-2 mb-4 border rounded"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -75,10 +75,10 @@ export default function LoginPage() {
             />
           </>
         ) : (
-          // SECURITY FIX: TOTP input for 2FA
+          // SÄKERHETSÅTGÄRD: TOTP-inmatning för 2FA
           <div>
             <p className="text-sm text-gray-600 mb-4">
-              Enter the 6-digit code from your authenticator app
+              Ange den 6-siffriga koden från din autentiseringsapp
             </p>
             <input
               type="text"
@@ -95,7 +95,8 @@ export default function LoginPage() {
           type="submit"
           className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
         >
-          {requiresTOTP ? 'Verify' : 'Sign In'}        </button>
+          {requiresTOTP ? 'Verifiera' : 'Logga in'}
+        </button>
       </form>
     </div>
   );

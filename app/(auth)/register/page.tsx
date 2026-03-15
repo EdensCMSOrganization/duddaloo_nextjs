@@ -24,7 +24,7 @@ export default function RegisterPage() {
     try {
       registerSchema.parse({ email, password });
     } catch (err) {
-      setError('Invalid email or password');
+      setError('Ogiltig e-post eller lösenord');
       return;
     }
 
@@ -41,32 +41,32 @@ export default function RegisterPage() {
         setSuccess(true);
         setTimeout(() => router.push('/login'), 2000);
       } else {
-        setError(data.error || 'Registration error');
+        setError(data.error || 'Registreringsfel');
       }
     } catch (err) {
-      setError('Network error');
+      setError('Nätverksfel');
     }
   };
 
   if (success) {
-    return <div className="p-8">✅ Admin created. Redirecting to login...</div>;
+    return <div className="p-8">✅ Admin skapat. Omdirigerar till inloggning...</div>;
   }
 
   return (
     <div className="min-h-screen max-w-md mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-4">Create Admin Account</h1>
+      <h1 className="text-2xl font-bold mb-4">Skapa Admin-konto</h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="email"
-          placeholder="Email"
+          placeholder="E-post"
           className="w-full p-2 mb-4 border rounded"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
-          placeholder="Password (min. 6 characters)"
+          placeholder="Lösenord (minst 6 tecken)"
           className="w-full p-2 mb-4 border rounded"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -75,7 +75,7 @@ export default function RegisterPage() {
           type="submit"
           className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
         >
-          Register
+          Registrera
         </button>
       </form>
     </div>
