@@ -1,49 +1,78 @@
+
+
 "use client";
-// app/success/page.tsx
-import Link from "next/link";
-import { useState, useEffect } from "react";
-import SuccessModal from "@/components/SuccessModal";
 
-export default function SuccessPage() {
-  const [open, setOpen] = useState(true);
+import { useEffect } from "react";
+import { createPortal } from "react-dom";
 
-  // clear cart on success page visit
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+}
+
+export default function Modal({ isOpen, onClose, title, children }: ModalProps) {
+
   useEffect(() => {
-    const cartId = localStorage.getItem("cart_id");
-    if (cartId) {
-      fetch("/api/cart", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cartId }),
-      }).catch((err) => {
-        console.error("Failed to clear cart on success page:", err);
-      });
-      localStorage.removeItem("cart_id");
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
     }
-  }, []);
+ 
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
 
-  return (
-    <>
-      <SuccessModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        title="Betalning slutförd!"
-        message="Tack för ditt köp. Vi arbetar på att packa din beställning."
-        buttonText="Tillbaka till butiken"
-        buttonHref="/"
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleEscape);
+    }
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+
+  if (typeof window === "undefined") return null;
+  return createPortal(
+    <div
+
+      className="fixed inset-0 z-60 flex items-center justify-center p-4"
+      onClick={onClose} 
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div 
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+        aria-hidden="true"
       />
-      {/* fallback content in case modal is closed or for accessibility */}
-      {!open && (
-        <div className="max-w-md mx-auto p-8 text-center">
-          <h1 className="text-2xl font-bold text-green-600">
-            Betalning slutförd!
-          </h1>
-          <p>Tack för ditt köp.</p>
-          <Link href="/" className="text-blue-600 mt-4 inline-block">
-            Tillbaka till butiken
-          </Link>
+      <div
+        className="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 transform transition-all"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h2 id="modal-title" className="text-xl font-bold text-gray-800">
+            {title}
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors p-1"
+            aria-label="Cerrar modal"
+          >
+            ✕
+          </button>
         </div>
-      )}
-    </>
+
+        {children}
+      </div>
+    </div>,
+    document.body 
   );
 }
